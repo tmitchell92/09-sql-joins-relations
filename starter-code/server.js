@@ -51,7 +51,9 @@ app.post('/articles', function(request, response) {
   function queryTwo() {
     client.query(
       `SELECT author_id from authors WHERE author=$1;`, // TODO: Write a SQL query to retrieve the author_id from the authors table for the new article
-      [request.body.author], // TODO: Add the author name as data for the SQL query
+      [
+        request.body.author
+      ], // TODO: Add the author name as data for the SQL query
       function(err, result) {
         if (err) console.error(err)
         queryThree(result.rows[0].author_id) // This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query
@@ -68,7 +70,7 @@ app.post('/articles', function(request, response) {
         request.body.publishedOn,
         request.body.body,
         request.body.author
-    ], // TODO: Add the data from our new article, including the author_id, as data for the SQL query.
+      ], // TODO: Add the data from our new article, including the author_id, as data for the SQL query.
       function(err) {
         if (err) console.error(err);
         response.send('insert complete');
@@ -87,9 +89,11 @@ app.put('/articles/:id', function(request, response) {
       author=$1, "authorUrl"=$2
     WHERE author_id=$3
     `,
-    [request.body.author,
-    request.body.authorUrl,
-    request.body.author_id]
+    [
+      request.body.author,
+      request.body.authorUrl,
+      request.body.author_id
+    ]
   )
   .then(function() {
     // TODO: Write a SQL query to update an article record. Keep in mind that article records
@@ -107,7 +111,8 @@ app.put('/articles/:id', function(request, response) {
         request.body.publishedOn,
         request.body.body,
         request.body.author_id,
-        request.params.id]
+        request.params.id
+      ]
     )
   })
   .then(function() {
@@ -121,7 +126,9 @@ app.put('/articles/:id', function(request, response) {
 app.delete('/articles/:id', function(request, response) {
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
-    [request.params.id]
+    [
+      request.params.id
+    ]
   )
   .then(function() {
     response.send('Delete complete');
